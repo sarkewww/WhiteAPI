@@ -1,0 +1,20 @@
+# 排除参考/研究用的第三方仓库
+docs/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+
+# 运行时
+*.log
+data.db
+cookie*.txt
+downloads/
