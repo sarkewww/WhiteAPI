@@ -37,7 +37,7 @@ def list_providers() -> list[dict]:
 
 def load_builtin_providers() -> None:
     """加载内置 provider"""
-    for mod in ("netease", "qq"):
+    for mod in ("netease", "qq", "spotify", "kugou", "kuwo"):
         try:
             importlib.import_module(f"app.providers.{mod}")
         except ImportError:

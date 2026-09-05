@@ -25,7 +25,7 @@ load_builtin_providers()
 downloader = MusicDownloader(download_dir=os.environ.get("DOWNLOAD_DIR", "downloads"))
 batch_mgr = BatchTaskManager(downloader)
 
-app = FastAPI(title="WhiteAPI", version="0.1.1",
+app = FastAPI(title="WhiteAPI", version="0.1.2",
               description="聚合音乐 API - 统一搜索/下载/歌词接口")
 
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])

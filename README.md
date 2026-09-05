@@ -1,6 +1,6 @@
 # WhiteAPI
 
-聚合音乐 API — 用一个统一接口对接多个音乐平台（网易云 / QQ 音乐 / …），提供搜索、播放直链、歌词、歌单、专辑能力，方便第三方项目集成。
+聚合音乐 API — 用一个统一接口对接多个音乐平台（网易云 / QQ 音乐 / 酷狗 / 酷我 / Spotify），提供搜索、播放直链、歌词、歌单、专辑能力，方便第三方项目集成。
 
 > 目前为 Python 原型阶段，后续考虑迁移到 Node.js。
 
@@ -17,6 +17,9 @@
 |------|------|------|
 | `netease` | 网易云音乐 | eapi 加密，支持无损/母带等音质 |
 | `qq` | QQ音乐 | musicu.fcg 接口，支持音质降级 |
+| `kugou` | 酷狗音乐 | gateway 签名接口，支持 128/320/flac/Hi-Res 降级 |
+| `kuwo` | 酷我音乐 | 搜索/直链/歌词，支持 128/192/320 音质 |
+| `spotify` | Spotify | 官方 Web API，需配置 client-credentials；仅提供 30s 试听 |
 
 ## 快速开始
 
@@ -53,7 +56,7 @@ GET /search?keyword=想去海边&provider=all&limit=10&search_type=1
 | 参数 | 类型 | 默认 | 说明 |
 |------|------|------|------|
 | keyword | string | 必填 | 搜索关键词 |
-| provider | string | `all` | `all`=并发所有平台，或指定 `netease`/`qq` |
+| provider | string | `all` | `all`=并发所有平台，或指定 `netease`/`qq`/`kugou`/`kuwo`/`spotify` |
 | limit | int | 10 | 每平台返回数量 (1-100) |
 | search_type | int | 1 | 1=单曲 10=专辑 100=歌手 1000=歌单 |
 | offset | int | 0 | 分页偏移 |
@@ -135,6 +138,19 @@ p = get_provider("netease", cookies="MUSIC_U=xxx;os=pc;appver=8.9.70;")
 
 - 网易云关键 cookie：`MUSIC_U`
 - QQ 音乐关键 cookie：`p_uin` / `p_skey`
+- 酷狗关键 cookie：`token` / `userid`（VIP 无损需要）
+- 酷我关键 cookie：`Hm_Iuvt_*`（部分接口需签名）
+
+## Spotify 配置
+
+Spotify 走官方 Web API，需要 OAuth2 client-credentials。设置环境变量后生效：
+
+```bash
+export SPOTIFY_CLIENT_ID=xxx
+export SPOTIFY_CLIENT_SECRET=xxx
+```
+
+> 限制：Spotify 公开 API **不提供完整播放直链**，`/song/url` 只返回 30 秒 `preview_url`（无预览时 `expired=true`）。未配置凭证时 provider 仍可注册，但调用会抛错。
 
 ## 开发
 
